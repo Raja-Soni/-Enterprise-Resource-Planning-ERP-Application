@@ -107,6 +107,9 @@ class _MyHomePageState extends State<MyHomePage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: provider.getThemeMode()
+              ? Colors.grey.shade900
+              : Colors.blue.shade600,
           leading: Icon(Icons.list, size: 30),
           title: CustomText(
             text: "Order List",
@@ -142,7 +145,12 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               CustomContainer(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0),
+                  padding: EdgeInsets.only(
+                    left: 10.0,
+                    right: 10.0,
+                    top: 10.0,
+                    bottom: 5.0,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

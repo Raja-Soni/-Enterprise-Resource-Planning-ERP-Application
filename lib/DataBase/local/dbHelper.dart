@@ -29,12 +29,12 @@ class DBHelper {
 
   final List<String> groceryList = [
     "Select Item",
-    "Rice",
-    "Milk",
-    "Bread",
-    "Eggs",
-    "Tomatoes",
-    "Sugar",
+    "Rice Box",
+    "Milk Box",
+    "Bread Box",
+    "Eggs Box",
+    "Tomatoes Box",
+    "Sugar Box",
   ];
 
   Future<Database> getDatabase() async {
