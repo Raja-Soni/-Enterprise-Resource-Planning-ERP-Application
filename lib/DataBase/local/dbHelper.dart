@@ -60,7 +60,7 @@ class DBHelper {
       )
     ''');
     for (var order in data) {
-      await db.insert('sales_orders', order);
+      await db.insert(TABLE_NAME, order);
     }
   }
 
