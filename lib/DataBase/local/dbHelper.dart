@@ -27,7 +27,7 @@ class DBHelper {
     },
   ];
 
-  final List<String> groceryList = [
+  final List<String> itemList = [
     "Select Item",
     "Rice Box",
     "Milk Box",
@@ -78,10 +78,5 @@ class DBHelper {
     };
     final db = await getDatabase();
     await db.insert(TABLE_NAME, newOrder);
-  }
-
-  deleleAll() async {
-    final db = await getDatabase();
-    await db.delete(TABLE_NAME);
   }
 }

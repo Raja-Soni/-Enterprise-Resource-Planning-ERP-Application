@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'ERP Mini Application',
       debugShowCheckedModeBanner: false,
       themeMode: context.watch<DataBaseProvider>().getThemeMode()
           ? ThemeMode.dark
@@ -51,24 +51,17 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    final read = context.read<DataBaseProvider>();
-    read.initializeData().then((_) {
-      int pendingOrders = context
-          .read<DataBaseProvider>()
-          .getPendingOrdersList()
-          .length;
-      double totalPendingAmount = context
-          .read<DataBaseProvider>()
-          .getTotalAmountOfPendingOrders();
-      bool pendingPopUp = context
-          .read<DataBaseProvider>()
-          .getPendingAlertShown();
+    final provider = context.read<DataBaseProvider>();
+    provider.initializeData().then((_) {
+      int pendingOrders = provider.getPendingOrdersList().length;
+      double totalPendingAmount = provider.getTotalAmountOfPendingOrders();
+      bool pendingPopUp = provider.getPendingAlertShown();
       if (pendingPopUp == false) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           showDialog(
             context: context,
             builder: (context) => CustomAlertBox(
-              buttonTextColor: context.read<DataBaseProvider>().getThemeMode()
+              buttonTextColor: provider.getThemeMode()
                   ? Colors.white
                   : Colors.black,
               title: 'Pending Orders',
@@ -77,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           );
         });
-        context.read<DataBaseProvider>().setPendingAlertShown(true);
+        provider.setPendingAlertShown(true);
       }
     });
   }

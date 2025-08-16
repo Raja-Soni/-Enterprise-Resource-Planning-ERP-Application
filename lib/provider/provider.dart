@@ -5,133 +5,25 @@ import 'package:flutter/cupertino.dart';
 enum Filters { today, pending, delivered, noFilter }
 
 class DataBaseProvider extends ChangeNotifier {
-  bool? _isDarkMode;
   DBHelper dbHelper;
+  bool? _isDarkMode;
   List<Map<String, dynamic>> allData = [];
-  DataBaseProvider({required this.dbHelper});
   Filters currentFilter = Filters.noFilter;
   String name = "";
-  int rate = 0;
-  int quantity = 0;
-  int total = 0;
   String selectedItem = "Select Item";
-  bool alertPopShowed = true;
+  int _quantity = 0;
+  int _rate = 0;
+  int _total = 0;
+  bool _pendingAlertShown = false;
   int highestValueOrderNumber = 0;
-  bool pendingAlertShown = false;
+  bool _alertPopShow = true;
 
-  List<Map<String, dynamic>> getPendingOrdersList() {
-    return allData
-        .where((order) => order[DBHelper.COLUMN_NAME_STATUS] == 'Pending')
-        .toList();
-  }
+  DataBaseProvider({required this.dbHelper});
 
-  void setPendingAlertShown(bool shown) {
-    pendingAlertShown = shown;
-    notifyListeners();
-  }
-
-  bool getPendingAlertShown() {
-    return pendingAlertShown;
-  }
-
-  double getTotalAmountOfPendingOrders() {
-    double totalAmount = 0;
-    final pendingList = getPendingOrdersList();
-    for (var amount in pendingList) {
-      totalAmount += amount[DBHelper.COLUMN_NAME_AMOUNT] as double;
-    }
-    return totalAmount;
-  }
-
-  int getHighestValueOrders() {
-    highestValueOrderNumber = allData
-        .where((order) => order[DBHelper.COLUMN_NAME_AMOUNT] > 10000)
-        .toList()
-        .length;
-    return highestValueOrderNumber;
-  }
-
-  setHighestValueOrders(int i) {
-    highestValueOrderNumber = i;
-    notifyListeners();
-  }
-
-  setAlertPopUpShow(bool set) {
-    alertPopShowed = set;
-    notifyListeners();
-  }
-
-  bool getAlertPopUpShow() {
-    return alertPopShowed;
-  }
-
-  setSelectedItem(String item) {
-    selectedItem = item;
-    notifyListeners();
-  }
-
-  String getSelectedItem() {
-    return selectedItem;
-  }
-
-  List<String> getGroceryList() {
-    return dbHelper.groceryList;
-  }
-
-  setName(String name) {
-    this.name = name;
-    notifyListeners();
-  }
-
-  String getName() {
-    return name;
-  }
-
-  setTotal() {
-    rate = 0;
-    quantity = 0;
-    notifyListeners();
-  }
-
-  int getTotal() {
-    total = rate * quantity;
-    return total;
-  }
-
-  setRate(int rate) {
-    this.rate = rate;
-    notifyListeners();
-  }
-
-  setQuantity(int quantity) {
-    this.quantity = quantity;
-    notifyListeners();
-  }
-
-  int getRate() {
-    return rate;
-  }
-
-  int getQuantity() {
-    return quantity;
-  }
+  ///////////// METHODS //////////////
 
   initializeData() async {
     allData = await dbHelper.getOrders();
-    notifyListeners();
-  }
-
-  bool getThemeMode() {
-    return _isDarkMode ?? false;
-  }
-
-  setThemeMode({required bool setThemeMode}) {
-    _isDarkMode = setThemeMode;
-    notifyListeners();
-  }
-
-  setFilter({required Filters filter}) {
-    currentFilter = filter;
     notifyListeners();
   }
 
@@ -165,7 +57,7 @@ class DataBaseProvider extends ChangeNotifier {
     return tempList;
   }
 
-  addOrder({required customerName, required rate, int? quantity}) {
+  void addOrder({required customerName, required rate, int? quantity}) {
     int totalAmount = getTotal();
     String newOrderStatus = (allData.length + 1) % 2 == 0
         ? "Pending"
@@ -179,13 +71,123 @@ class DataBaseProvider extends ChangeNotifier {
     );
     dbHelper.addOrder(newOrder);
     if (totalAmount > 10000) {
-      alertPopShowed = false;
+      _alertPopShow = false;
     }
     notifyListeners();
   }
 
-  deletetable() {
-    dbHelper.deleleAll();
+  ///////////// SETTERS //////////////
+
+  void setThemeMode({required bool setThemeMode}) {
+    _isDarkMode = setThemeMode;
     notifyListeners();
+  }
+
+  void setFilter({required Filters filter}) {
+    currentFilter = filter;
+    notifyListeners();
+  }
+
+  void setName(String name) {
+    this.name = name;
+    notifyListeners();
+  }
+
+  void setSelectedItem(String item) {
+    selectedItem = item;
+    notifyListeners();
+  }
+
+  void setQuantity(int quantity) {
+    _quantity = quantity;
+    notifyListeners();
+  }
+
+  void setRate(int rate) {
+    _rate = rate;
+    notifyListeners();
+  }
+
+  void setTotal() {
+    _rate = 0;
+    _quantity = 0;
+    notifyListeners();
+  }
+
+  void setHighestValueOrders(int i) {
+    highestValueOrderNumber = i;
+    notifyListeners();
+  }
+
+  void setPendingAlertShown(bool shown) {
+    _pendingAlertShown = shown;
+    notifyListeners();
+  }
+
+  void setAlertPopUpShow(bool set) {
+    _alertPopShow = set;
+    notifyListeners();
+  }
+
+  ///////////// GETTERS //////////////
+
+  bool getThemeMode() {
+    return _isDarkMode ?? false;
+  }
+
+  String getName() {
+    return name;
+  }
+
+  String getSelectedItem() {
+    return selectedItem;
+  }
+
+  int getRate() {
+    return _rate;
+  }
+
+  int getQuantity() {
+    return _quantity;
+  }
+
+  int getTotal() {
+    _total = _rate * _quantity;
+    return _total;
+  }
+
+  bool getPendingAlertShown() {
+    return _pendingAlertShown;
+  }
+
+  double getTotalAmountOfPendingOrders() {
+    double totalAmount = 0;
+    final pendingList = getPendingOrdersList();
+    for (var amount in pendingList) {
+      totalAmount += amount[DBHelper.COLUMN_NAME_AMOUNT] as double;
+    }
+    return totalAmount;
+  }
+
+  int getHighestValueOrders() {
+    highestValueOrderNumber = allData
+        .where((order) => order[DBHelper.COLUMN_NAME_AMOUNT] > 10000)
+        .toList()
+        .length;
+    return highestValueOrderNumber;
+  }
+
+  List<Map<String, dynamic>> getPendingOrdersList() {
+    return allData
+        .where((order) => order[DBHelper.COLUMN_NAME_STATUS] == 'Pending')
+        .toList();
+  }
+
+  bool getAlertPopUpShow() {
+    return _alertPopShow;
+  }
+
+  List<String> getGroceryList() {
+    return dbHelper.itemList;
   }
 }
