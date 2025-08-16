@@ -1,16 +1,17 @@
 # erp_mini_app
 
-A new Flutter project.
+https://github.com/user-attachments/assets/a0a4b39c-0748-40e3-b2a2-9985f2dabbb3
 
-## Getting Started
+* Developed a Sales Order Management App in Flutter with listing and creation functionality.
 
-This project is a starting point for a Flutter application.
+* Loaded initial JSON data into local sqflite; new orders are saved and shown after app restart.
 
-A few resources to get you started if this is your first Flutter project:
+* Implemented filters: All Orders, Today’s Orders, Pending Orders, and Delivered Orders.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+* Built a New Sales Order page with form fields, auto-calculation of total, and local data persistence.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* Added real-time alerts for high-value orders (e.g., > ₹10,000) using pop-ups.
+
+* Implemented daily sales summary pop-ups showing pending orders and total amount.
+
+* Used Provider state management for dynamic UI updates and responsive experience.
