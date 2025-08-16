@@ -211,7 +211,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         padding: EdgeInsets.symmetric(horizontal: 4),
                         separatorBuilder: (context, index) => Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Divider(),
+                          child: Divider(
+                            color: provider.getThemeMode()
+                                ? Colors.white
+                                : Colors.grey.shade600,
+                          ),
                         ),
                         itemBuilder: (context, index) => Card(
                           elevation: 6,
@@ -220,6 +224,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               : Colors.white,
                           child: ListTile(
                             leading: CustomText(text: (index + 1).toString()),
+                            isThreeLine: true,
                             title: CustomText(
                               textSize: 18,
                               text:
